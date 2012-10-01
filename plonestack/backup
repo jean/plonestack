@@ -1,0 +1,58 @@
+#!/usr/bin/env python
+
+import os, sys, tarfile, datetime
+
+def get_next_path_in_dir(directory, prefix="", suffix=""):
+    now = datetime.datetime.now()
+    dateprefix = "%04d-%02d-%02d" % (now.year, now.month, now.day)
+    run = 0
+    while True:
+        name = "-".join((prefix, dateprefix, str(run))) + suffix
+        path = os.path.join(directory, name)
+        if not os.path.exists(path):
+            return path
+        run = run + 1
+
+
+def main():
+    if not len(sys.argv) == 4:
+        raise SystemError("Argument error: Expect ./backup ROOT SRC DST")
+
+    root_folder = sys.argv[1]
+    src_folder = sys.argv[2]
+    dst_folder = sys.argv[3]
+
+    if not os.path.exists(src_folder):
+        # Source folder not existing is not an error, we cant backup on intial build for example
+        return
+
+    if not os.path.exists(dst_folder):
+        os.makedirs(dst_folder)
+
+    # Relative path to use in the tarball
+    relpath = os.path.relpath(src_folder, root_folder)
+
+    # Path to store as
+    path = get_next_path_in_dir(dst_folder, prefix="backup", suffix=".tar.gz")
+
+    # Only backup key components, dont back up pid files or root owned stuff
+    def exclude_func(path):
+        relpath = os.path.relpath(path, root_folder)
+        if relpath in (".", "var"):
+            return False
+        if relpath.startswith("var/filestorage"):
+            return False
+        if relpath.startswith("var/fss_storage_global"):
+            return False
+        if relpath.startswith("var/fss_backup_global"):
+            return False
+        return True
+
+    # Create the archive
+    t = tarfile.open(path, "w:gz")
+    t.add(src_folder, relpath, recursive=True, exclude=exclude_func)
+    t.close()
+
+if __name__ == "__main__":
+    main()
+

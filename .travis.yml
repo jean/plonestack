@@ -1,0 +1,25 @@
+language: python
+
+env:
+  - PY=python2.4 BUILDOUT=1.4.3 PLONE=3.1.7 ENV=dev
+  - PY=python2.4 BUILDOUT=1.4.3 PLONE=3.1.7 ENV=production
+  - PY=python2.4 BUILDOUT=1.4.3 PLONE=3.3.5 ENV=dev
+  - PY=python2.4 BUILDOUT=1.4.3 PLONE=3.3.5 ENV=production
+  - PY=python2.6 BUILDOUT=1.4.3 PLONE=4.2.1 ENV=dev
+  - PY=python2.6 BUILDOUT=1.4.3 PLONE=4.2.1 ENV=production
+  - PY=python2.6 BUILDOUT=1.5.2 PLONE=4.2.1 ENV=dev
+  - PY=python2.6 BUILDOUT=1.5.2 PLONE=4.2.1 ENV=production
+
+install:
+  - sudo ./setup-for-travis.sh
+  - $PY bootstrap.py -v $BUILDOUT buildout:directory=$PWD
+  - ./bin/buildout buildout:develop=$PWD buildout:directory=$PWD versions:Plone=$PLONE versions:zc.buildout=$BUILDOUT plonestack:environment=$ENV buildout:parts= buildout:extensions=
+  - ./bin/buildout buildout:develop=$PWD buildout:directory=$PWD versions:Plone=$PLONE versions:zc.buildout=$BUILDOUT plonestack:environment=$ENV
+
+#notifications:
+#  email:
+#    recipients:
+#      - john.carr@isotoma.com
+#    on_success: change
+#    on_failure: always
+
