@@ -14,3 +14,17 @@ buildout as eggs.
 
 This is a 'stack' for deploying Plone on Ubuntu and Red Hat boxes.
 
+
+Getting started
+===============
+
+Your buildout now looks like this::
+
+    [buildout]
+    extensions = plonestack
+    versions = versions
+
+    [versions]
+    zc.buildout = 1.4.3
+    Plone = 4.2.1
+

@@ -1,3 +1,4 @@
+import platform
 
 from zc.buildout import UserError
 
@@ -14,7 +15,7 @@ def _get_version(config, package):
 def load(buildout):
     config = buildout.get(__name__, {})
 
-    s = Stack("plonstack", buildout)
+    s = Stack("plonestack", buildout)
     s.load("versions.cfg")
     s.load("base.cfg")
 
