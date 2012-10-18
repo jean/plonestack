@@ -2,6 +2,9 @@
 plonestack
 ==========
 
+.. image:: https://travis-ci.org/isotoma/plonestack.png
+   :target: https://travis-ci.org/#!/isotoma/plonestack
+
 At Isotoma towers we have settled around a fairly standard buildout for
 deploying Plone.
 
