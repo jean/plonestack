@@ -86,6 +86,15 @@ It can also set portal properties and call setters on objects::
 
 Using these may lead to scornful looks, however.
 
+If the ``bin/migrate`` script detects any mountpoints inside the Plone site it is updating that are being blocked by objects in the main Data.fs then those objects will automatically be migrated into the mountpoint. This facilitates moving to a split catalog setup to improve your catalog performance.
+
+Incidentally, there is a feature flag for split catalog::
+
+    [plonestack]
+    extras = enable-split-portal-catalog
+
+The next time you run buildout you will have a split site.
+
 Developer builds of your code will have a ``bin/test``. By default it will run the tests of any develop eggs it can detect in your checkout.
 
 
