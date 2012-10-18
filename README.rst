@@ -86,7 +86,7 @@ It can also set portal properties and call setters on objects::
 
 Using these may lead to scornful looks, however.
 
-Developer builds of your code will have a ``bin/test``. 
+Developer builds of your code will have a ``bin/test``. By default it will run the tests of any develop eggs it can detect in your checkout.
 
 
 Zope
@@ -110,9 +110,13 @@ well.
 
 All installs will have a ``zopeU`` instance for running scripts against.
 
+The buildout knows the subversion branch/tag or git branch that it is being deployed from. We bake that information into zope.conf.
+
 
 Pound
 =====
+
+By default we use a system installed pound. We run an new instance of that pound with its own start/stop script and config file for each buildout.
 
 By default our pound config will give you sticky sessions based on the
 ``_ZopeId`` cookie. This means that users will tend to get the same zope. This
@@ -143,6 +147,8 @@ You can turn off pound with a feature flag::
 Varnish
 =======
 
+By default we use a system installed varnish. We run an new instance of that varnish with its own start/stop script and VCL file for each buildout.
+
 Our standard varnish recipe supports testing your VCL before attempting to use
 it::
 
@@ -160,4 +166,19 @@ Apache
 This is the only part of the stack that might be shared by multiple sites.
 Buildout will generate apache config files that can be symlinked into
 ``/etc/apache2/sites-available``.
+
+Apache default VHost behaviour can mean that even if your config is wrong enough that the IP's aren't even right it can still seem to be working. Months later installing another site can change the default and suddenly a site you thought was
+working no longer is. Our apache configs set a header of ``sitename`` on their responses. This can be used by your monitoring system to make sure the VHost you expect to reply is the one that is replying.
+
+
+Environment adaptability
+========================
+
+By default this buildout can be deployed as any user. When it is started it will try and run as that user. This behaviour is controlled by ``${environment:effective-user}``.
+
+It is optimized for servers with multiple IP addresses. By default it will try and use the IP address of ``eth0``. You can override that behaviour::
+
+    [hosts]
+    apache = 10.33.33.3
+    zope = 10.33.33.4
 
