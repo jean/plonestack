@@ -24,7 +24,7 @@ setup(
     install_requires = [
         'setuptools',
         'zc.buildout',
-        'missingbits >= 0.0.15',
+        'missingbits >= 0.0.16',
     ],
     entry_points = {
         "zc.buildout.extension": [ "ext = plonestack:load" ],
