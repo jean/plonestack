@@ -57,5 +57,7 @@ def load(buildout):
         if config.get("environment", "dev") != "dev":
             s.load("extras/" + extra + "_fullstack.cfg", optional=True)
 
+    s.load("/etc/plonestack.cfg", optional=True)
+
     s.apply()
 
