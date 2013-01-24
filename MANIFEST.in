@@ -1,1 +1,3 @@
-prune docs
+recursive-include plonestack *
+include *
+global-exclude *.pyc
