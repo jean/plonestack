@@ -4,6 +4,7 @@ Changelog
 0.1.1 (unreleased)
 ------------------
 
+- add solr_fullstack.cfg with logdir and pidpath specified
 - Bump solr version number.
 
 
